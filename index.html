@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My youtube</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+
+
+  #container{
+          width:100%;
+          margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 30px;
+            /* margin-bottom: 60px; */
+            margin-top: 20px;
+        cursor: pointer;  
+
+            
+}
+#container>div{
+    /* border: 1px solid black; */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+#container>div>img{
+    width: 100%;
+}
+#container>div>h5{
+    font-size: large;
+    margin-bottom: -10px;
+}
+#container>div>h3{
+    margin-bottom: -13px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
+
+#nav{
+    border: 2px solid #ccc;
+    height: 50px;
+    width: 100%;
+    display: flex;
+justify-content: space-between;
+}
+#nav>div:nth-child(1){
+/* border: 1px solid teal; */
+width: 10%;
+margin-left: 2%;
+
+}
+#nav>div:nth-child(1)>a>img{
+    width: 90%;
+    margin-top: 10px;
+   
+}
+#nav>div:nth-child(2){
+ /* border: 1px solid red; */
+margin: auto;
+height: 40px;
+width: 60%;
+/* margin-bottom: 20px; */
+
+}
+#nav>div:nth-child(2)>input{
+    width:80%;
+    height: 35px;
+    font-size: 30px;
+    border: 1px solid #ccc;
+    /* margin-top: 1px; */
+   
+   
+}
+#nav>div:nth-child(2)>button{
+    height: 40px;
+    /* width: 7%; */
+    margin-bottom: 20px;
+    position: relative;
+    top: -3px;
+     margin-left: -3px;
+     width:10%;
+}
+#nav>div:nth-child(2)>button:hover{
+    background-color: brown;
+    font-size:30px;
+}
+
+#nav>div:nth-child(3){
+ width: 18%;
+ /* border: 1px solid teal; */
+display: flex;
+justify-content: space-around;
+}
+ #nav>div:nth-child(3)>i{
+    width: 30%;
+    font-size:30px ;
+    margin-top: 8px;
+} 
+#nav>div:nth-child(3)>i:hover{
+    font-size: 40px;
+}
+
+
+    </style>
+</head>
+<body onload="submit()" >
+   
+     
+<div id="nav">
+          <div>
+        <a href="index.html"> <img src="https://www.edigitalagency.com.au/wp-content/uploads/Youtube-logo-png.png" alt=""></a>
+        </div>
+          <div>
+            <input type="text" id="search" placeholder="Search" onchange="submit()">           
+            <button  id="query" onclick="submit()"><i class='fa-solid fa-magnifying-glass'></i></button> 
+            <!-- <button id=" filter()">Sort</button> -->
+        </div>
+        <div>
+            <i class="fa-solid fa-video"></i>
+            <i class="fa fa-th" aria-hidden="false"></i>
+            <i class="fa-solid fa-bell"></i> 
+            <i class="fa-solid fa-user-large"></i>
+         
+            </div> 
+        </div>
+    <div id="container"></div>
+   
+</body>
+</html>
+
+<script>
+
+let q=""
+ let submit=async ()=>{
+   let search = document.querySelector("#search").value
+    // console.log(search);
+  let data=await get(search);
+  display(data)
+  q=search
+}
+let get=async (search)=>{
+let url=`https://youtube.googleapis.com/youtube/v3/search?part=%20snippet&maxResults=20&q=${search}&key=AIzaSyBY2bcarwJTn9fCCPOziLjX5gc5zDZV6gc`
+let res=await fetch(url);
+let data = await res.json();
+// console.log(data)
+return data.items;
+// display(data.items)
+
+}
+
+function display(data){
+let container=document.getElementById("container");
+container.innerHTML = null
+data.forEach((elem)=>{
+let div=document.createElement("div");
+div.setAttribute("class","vedio");
+div.onclick =()=>{
+    save(elem)
+}
+
+let img=document.createElement("img");
+img.src=elem.snippet.thumbnails.medium.url
+
+let h5=document.createElement("h5");
+h5.innerText=elem.snippet.channelTitle
+let p2=document.createElement("p");
+p2.innerText=elem.snippet.description
+let h3=document.createElement("h3");
+h3.innerText=elem.snippet.title
+
+div.append(img,h3,h5,p2)
+container.append(div)
+})
+}
+
+let save=(data)=>{
+    localStorage.setItem("vedio",JSON.stringify(data));
+    window.location.href="vedio.html"
+}
+
+
+// let filter = async () => {
+//   let data = await getData(q);
+//   console.log(data);
+//   data = data.filter((el) => {
+//     return el.snippet.channelId === "UCvC4D8onUfXzvjTOM-dBfEA";
+//   });
+//   display(data);
+// };
+
+alert("Welcome to my🙏 Sasta youtube")
+alert("Owner:-Faizan😎 Khan")
+
+</script>
